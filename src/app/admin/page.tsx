@@ -12,10 +12,9 @@ import {
   saveProduct,
   deleteProduct,
   uploadImage,
-  seedSupabaseDatabase,
-  isSupabaseConfigured,
-  supabase,
-} from "@/lib/supabase";
+  seedFirebaseDatabase,
+  isFirebaseConfigured,
+} from "@/lib/firebase";
 import {
   ArrowLeft,
   Plus,
@@ -36,11 +35,10 @@ import {
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  const [activeTab, setActiveTab] = useState<"products" | "categories" | "config">("products");
+  const [activeTab, setActiveTab] = useState<"products" | "categories">("products");
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -66,15 +64,6 @@ export default function AdminPage() {
     if (sessionToken === "true") {
       setIsAuthenticated(true);
     }
-    // Si supabase está configurado, chequear sesión activa
-    if (supabase) {
-      supabase.auth.getSession().then(({ data }) => {
-        if (data.session) {
-          setIsAuthenticated(true);
-          sessionStorage.setItem("dulzurabox_admin_auth", "true");
-        }
-      });
-    }
   }, []);
 
   // Cargar datos
@@ -99,38 +88,10 @@ export default function AdminPage() {
   }, [isAuthenticated]);
 
   // Manejador de Login
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");
 
-    // 1. Si Supabase está configurado, intentar autenticación con Supabase Auth
-    if (supabase && email.trim()) {
-      try {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password: password.trim(),
-        });
-
-        if (!error) {
-          setIsAuthenticated(true);
-          sessionStorage.setItem("dulzurabox_admin_auth", "true");
-          return;
-        } else {
-          // Si falló por credenciales de Supabase, verificar si ingresó la contraseña maestra
-          if (password === fallbackPassword) {
-            setIsAuthenticated(true);
-            sessionStorage.setItem("dulzurabox_admin_auth", "true");
-            return;
-          }
-          setLoginError(error.message || "Error al autenticar con Supabase.");
-          return;
-        }
-      } catch (err: any) {
-        console.error(err);
-      }
-    }
-
-    // 2. Fallback de contraseña local
     if (password === fallbackPassword) {
       setIsAuthenticated(true);
       sessionStorage.setItem("dulzurabox_admin_auth", "true");
@@ -139,10 +100,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = async () => {
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
+  const handleLogout = () => {
     sessionStorage.removeItem("dulzurabox_admin_auth");
     setIsAuthenticated(false);
   };
@@ -164,7 +122,7 @@ export default function AdminPage() {
         order_index: categories.length + 1,
       });
       setNewCategoryName("");
-      setStatusMessage({ type: "success", text: "¡Categoría agregada con éxito!" });
+      setStatusMessage({ type: "success", text: "¡Categoría agregada con éxito a Firebase!" });
       refreshData();
     } catch (err: any) {
       setStatusMessage({ type: "error", text: "Error: " + err.message });
@@ -193,7 +151,7 @@ export default function AdminPage() {
   };
 
   const handleDeleteCategory = async (id: string) => {
-    if (!confirm("¿Seguro que deseas eliminar esta categoría? Se eliminarán los productos asociados.")) return;
+    if (!confirm("¿Seguro que deseas eliminar esta categoría?")) return;
     try {
       await deleteCategory(id);
       setStatusMessage({ type: "success", text: "Categoría eliminada." });
@@ -245,7 +203,7 @@ export default function AdminPage() {
       setUploadingImage(true);
       let finalImageUrl = editingProduct.image_url || "/img/caja.jpg";
 
-      // Subir imagen a Supabase Storage si se seleccionó archivo nuevo
+      // Subir imagen a Firebase Storage si se seleccionó archivo nuevo
       if (imageFile) {
         finalImageUrl = await uploadImage(imageFile);
       }
@@ -259,7 +217,7 @@ export default function AdminPage() {
       setIsProductModalOpen(false);
       setEditingProduct(null);
       setImageFile(null);
-      setStatusMessage({ type: "success", text: "¡Producto guardado exitosamente!" });
+      setStatusMessage({ type: "success", text: "¡Producto guardado exitosamente en Firebase!" });
       refreshData();
     } catch (err: any) {
       setStatusMessage({ type: "error", text: "Error al guardar producto: " + err.message });
@@ -279,11 +237,11 @@ export default function AdminPage() {
     }
   };
 
-  // Sembrar datos a Supabase
+  // Sembrar datos a Firebase Firestore
   const handleSeedDatabase = async () => {
-    if (!confirm("¿Deseas poblar Supabase con los productos y categorías iniciales del catálogo?")) return;
+    if (!confirm("¿Deseas poblar Firebase Firestore con las categorías y productos iniciales del catálogo?")) return;
     setLoading(true);
-    const result = await seedSupabaseDatabase();
+    const result = await seedFirebaseDatabase();
     setStatusMessage({
       type: result.success ? "success" : "error",
       text: result.message,
@@ -299,16 +257,16 @@ export default function AdminPage() {
       <div className="min-h-screen bg-[#ffb6c1] flex items-center justify-center p-4">
         <div className="card-cute w-full max-w-md p-8 border-2 border-white/80 shadow-2xl">
           <div className="text-center mb-6">
-            <div className="w-20 h-20 mx-auto rounded-full p-1 bg-white shadow-md relative overflow-hidden mb-3">
+            <div className="w-32 h-24 mx-auto relative mb-2">
               <Image
-                src="/img/logo.jpg"
+                src="/img/logo.png"
                 alt="Logo DulzuraBox"
                 fill
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             <h1 className="text-2xl font-black text-[#900020]">Panel de Administración</h1>
-            <p className="text-xs text-gray-700 mt-1">DulzuraBox • Gestión de Catálogo</p>
+            <p className="text-xs text-gray-700 mt-1">DulzuraBox • dulzurabox.com.ar</p>
           </div>
 
           {loginError && (
@@ -319,21 +277,6 @@ export default function AdminPage() {
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
-            {isSupabaseConfigured && (
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Email de Administrador (Opcional si usas contraseña maestra)
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@dulzurabox.com"
-                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 focus:outline-none focus:border-[#900020] text-sm"
-                />
-              </div>
-            )}
-
             <div>
               <label className="block text-xs font-bold text-gray-700 mb-1">
                 Contraseña de Acceso
@@ -381,8 +324,8 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 text-[#900020] font-black text-lg">
-              <div className="w-8 h-8 rounded-full overflow-hidden relative border border-pink-200">
-                <Image src="/img/logo.jpg" alt="Logo" fill className="object-cover" />
+              <div className="w-10 h-8 relative">
+                <Image src="/img/logo.png" alt="Logo" fill className="object-contain" />
               </div>
               <span className="font-bubble text-2xl hidden sm:inline">Dulzurabox</span>
               <span className="text-xs font-sans bg-pink-100 text-[#900020] px-2 py-0.5 rounded-full font-bold">
@@ -433,35 +376,29 @@ export default function AdminPage() {
 
       {/* Contenido Principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
-        {/* Banner de Supabase Status */}
+        {/* Banner de Firebase Status */}
         <div className="mb-6 p-4 rounded-2xl bg-white border border-pink-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-xl ${isSupabaseConfigured ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>
+            <div className={`p-2.5 rounded-xl ${isFirebaseConfigured ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-700"}`}>
               <Database className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-sm font-extrabold text-gray-900">
-                {isSupabaseConfigured
-                  ? "Conectado a Supabase (PostgreSQL & Storage)"
-                  : "Modo Local / Demostración Activo"}
+                Firebase Conectado: <span className="text-[#900020] font-mono">dulzurabox</span>
               </h2>
               <p className="text-xs text-gray-700">
-                {isSupabaseConfigured
-                  ? "Las imágenes se suben al Storage y los cambios persisten en tu base de datos remota."
-                  : "Para persistencia remota en la nube, coloca tus credenciales en el archivo .env.local."}
+                Firestore Database y Firebase Storage activos. Dominio: <span className="font-bold">dulzurabox.com.ar</span>
               </p>
             </div>
           </div>
 
-          {isSupabaseConfigured && (
-            <button
-              onClick={handleSeedDatabase}
-              className="bg-[#900020] hover:bg-[#720019] text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow transition-all flex items-center gap-1.5 whitespace-nowrap"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>Sembrar Catálogo Inicial en Supabase</span>
-            </button>
-          )}
+          <button
+            onClick={handleSeedDatabase}
+            className="bg-[#900020] hover:bg-[#720019] text-white text-xs font-extrabold px-4 py-2 rounded-xl shadow transition-all flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Sembrar Catálogo Inicial en Firestore</span>
+          </button>
         </div>
 
         {/* Pestañas de Navegación */}
@@ -741,7 +678,7 @@ export default function AdminPage() {
               {/* Subida de Imagen */}
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Foto del Producto (Subir archivo a Supabase Storage)
+                  Foto del Producto (Subir a Firebase Storage)
                 </label>
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 rounded-xl bg-pink-50 border border-pink-200 overflow-hidden relative flex-shrink-0">
@@ -765,7 +702,7 @@ export default function AdminPage() {
                       />
                     </label>
                     <p className="text-[11px] text-gray-700 mt-1">
-                      Formatos: JPG, PNG, WebP. Se subirá automáticamente al bucket de Supabase.
+                      Formatos: JPG, PNG, WebP. Se subirá a <code className="font-mono text-[#900020]">dulzurabox.firebasestorage.app</code>.
                     </p>
                   </div>
                 </div>
@@ -800,7 +737,7 @@ export default function AdminPage() {
                   {uploadingImage ? (
                     <>
                       <div className="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white" />
-                      <span>Subiendo imagen...</span>
+                      <span>Subiendo imagen a Firebase...</span>
                     </>
                   ) : (
                     <span>Guardar Producto</span>

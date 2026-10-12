@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dulzurabox.com"),
+  metadataBase: new URL("https://dulzurabox.com.ar"),
   title: "DulzuraBox | Regala detalles, no excusas",
   description: "Catálogo interactivo de regalos dulces, ramos Hot Wheels, cajas personalizadas, chocolates y detalles únicos.",
-  keywords: ["DulzuraBox", "Regalos dulces", "Hot Wheels", "Chocolates", "Ramos dulces", "Cajas de regalo"],
+  keywords: ["DulzuraBox", "Regalos dulces", "Hot Wheels", "Chocolates", "Ramos dulces", "Cajas de regalo", "Argentina"],
   openGraph: {
     title: "DulzuraBox | Regala detalles, no excusas",
     description: "Catálogo interactivo de ramos Hot Wheels y cajas dulces personalizadas.",
-    images: ["/img/logo.jpg"],
+    images: ["/img/logo.png"],
   },
 };
 

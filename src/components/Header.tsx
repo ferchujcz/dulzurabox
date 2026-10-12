@@ -8,7 +8,7 @@ export function Header() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "543755583767";
 
   return (
-    <header className="relative w-full pt-8 pb-4 px-4 text-center overflow-hidden">
+    <header className="relative w-full pt-6 pb-4 px-4 text-center overflow-hidden">
       {/* Estrellitas decorativas flotantes */}
       <div className="absolute top-4 left-6 text-white opacity-80">
         <Sparkle size={28} />
@@ -36,35 +36,26 @@ export function Header() {
           </Link>
         </div>
 
-        {/* Logo Badge */}
-        <div className="relative group cursor-pointer">
-          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white shadow-xl shadow-[#900020]/15 relative overflow-hidden transition-transform duration-300 group-hover:scale-105">
+        {/* Logo sin fondo (Transparente) */}
+        <div className="relative group cursor-pointer animate-float">
+          <div className="w-40 sm:w-48 h-32 sm:h-36 relative transition-transform duration-300 group-hover:scale-105 drop-shadow-md">
             <Image
-              src="/img/logo.jpg"
+              src="/img/logo.png"
               alt="DulzuraBox Logo"
-              width={128}
-              height={128}
+              fill
               priority
-              className="w-full h-full object-cover rounded-full"
+              className="object-contain"
             />
-          </div>
-          <div className="absolute -bottom-2 -right-2 bg-[#900020] text-white p-2 rounded-full shadow-md animate-bounce">
-            <Heart className="w-4 h-4 fill-white" />
           </div>
         </div>
 
         {/* Eslogan superior */}
-        <p className="mt-4 text-sm sm:text-base font-bold tracking-wide uppercase text-[#900020] bg-white/60 backdrop-blur-sm px-4 py-1 rounded-full shadow-sm">
+        <p className="mt-2 text-sm sm:text-base font-extrabold tracking-wide uppercase text-[#900020] bg-white/60 backdrop-blur-sm px-4 py-1 rounded-full shadow-sm">
           Regala detalles, no excusas ✨
         </p>
 
-        {/* Título de Marca con estilo retro */}
-        <h1 className="mt-2 text-4xl sm:text-6xl md:text-7xl font-bubble text-[#900020] tracking-wide text-retro-shadow transition-transform">
-          Dulzurabox
-        </h1>
-
         {/* Subtítulo estilo catálogo con pincelada */}
-        <div className="mt-2 inline-flex items-center gap-3">
+        <div className="mt-3 inline-flex items-center gap-3">
           <Squiggle className="text-[#900020]" />
           <span className="text-xs sm:text-sm font-black uppercase tracking-[0.25em] text-[#900020]/90">
             Catálogo Interactivo

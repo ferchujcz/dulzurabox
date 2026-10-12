@@ -7,7 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductModal } from "@/components/ProductModal";
 import { WaveDivider, Sparkle } from "@/components/Sparkle";
 import { Category, Product } from "@/types/database";
-import { getCategories, getProducts } from "@/lib/supabase";
+import { getCategories, getProducts } from "@/lib/firebase";
 import { Search, Heart, MessageCircle, Gift, Sparkles, AlertCircle } from "lucide-react";
 import Link from "next/link";
 

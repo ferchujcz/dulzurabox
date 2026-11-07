@@ -14,7 +14,9 @@ export function CategoryFilter({
   onSelectCategory,
 }: CategoryFilterProps) {
   const getCategoryIcon = (slug: string, isSelected: boolean) => {
-    const baseClass = `w-4 h-4 shrink-0 ${isSelected ? "text-pink-200" : "text-[#e01e5a]"}`;
+    const baseClass = `w-4 h-4 shrink-0 transition-colors ${
+      isSelected ? "text-[#ff85a2]" : "text-[#D91B5C]"
+    }`;
     if (slug.includes("hot-wheels")) return <Flame className={baseClass} />;
     if (slug.includes("cajas")) return <Package className={baseClass} />;
     if (slug.includes("ramos")) return <Heart className={baseClass} />;
@@ -27,14 +29,19 @@ export function CategoryFilter({
     <div className="w-full flex items-center justify-start md:justify-center overflow-x-auto no-scrollbar py-2 px-1 gap-2 sm:gap-2.5">
       {/* Botón 'Todos' */}
       <button
+        type="button"
         onClick={() => onSelectCategory(null)}
-        className={`whitespace-nowrap flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm cursor-pointer active:scale-95 ${
+        className={`whitespace-nowrap flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
           selectedCategoryId === null
-            ? "bg-[#900020] text-white shadow-[#900020]/25 shadow-md scale-[1.03] ring-2 ring-white"
-            : "bg-white/90 hover:bg-white text-[#900020] border border-white"
+            ? "bg-[#7A0022] text-white shadow-md shadow-[#7A0022]/20"
+            : "bg-white hover:bg-[#fff0f4] text-[#521525] border border-[#7A0022]/12 shadow-2xs"
         }`}
       >
-        <Sparkles className={`w-4 h-4 ${selectedCategoryId === null ? "text-pink-200" : "text-[#e01e5a]"}`} />
+        <Sparkles
+          className={`w-4 h-4 ${
+            selectedCategoryId === null ? "text-[#ff85a2]" : "text-[#D91B5C]"
+          }`}
+        />
         <span>Todo el Catálogo</span>
       </button>
 
@@ -44,11 +51,12 @@ export function CategoryFilter({
         return (
           <button
             key={cat.id}
+            type="button"
             onClick={() => onSelectCategory(cat.id)}
-            className={`whitespace-nowrap flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-sm cursor-pointer active:scale-95 ${
+            className={`whitespace-nowrap flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer active:scale-95 ${
               isSelected
-                ? "bg-[#900020] text-white shadow-[#900020]/25 shadow-md scale-[1.03] ring-2 ring-white"
-                : "bg-white/90 hover:bg-white text-[#900020] border border-white"
+                ? "bg-[#7A0022] text-white shadow-md shadow-[#7A0022]/20"
+                : "bg-white hover:bg-[#fff0f4] text-[#521525] border border-[#7A0022]/12 shadow-2xs"
             }`}
           >
             {getCategoryIcon(cat.slug, isSelected)}

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#ffb6c1",
+  themeColor: "#fff8fa",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | DulzuraBox Oberá",
   },
   description:
-    "Tienda #1 de regalos en Oberá, Misiones. Regalos personalizados, ramos de Hot Wheels, cajas dulces DulzuraBox, ramos de chocolates y gomitas, fotos Polaroid y cuadros personalizados. ¡Pedí fácil por WhatsApp al +54 3755 583767!",
+    "Boutique de regalos personalizados en Oberá, Misiones. Ramos de Hot Wheels, Cajas DulzuraBox, Ramos de Chocolates y Golosinas, Fotos Polaroid y Cuadros personalizados. ¡Pedí fácil por WhatsApp al +54 3755 583767!",
   keywords: [
     "regalos obera",
     "regalos en obera",
@@ -175,7 +175,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <script
@@ -183,7 +183,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-[#ffb6c1] text-[#900020] antialiased selection:bg-[#900020] selection:text-white">
+      <body className="min-h-screen bg-[#fff8fa] text-[#3d0c1a] antialiased selection:bg-[#7A0022] selection:text-white">
         {children}
       </body>
     </html>

@@ -27,10 +27,10 @@ export function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
-    <article className="card-cute group flex flex-col justify-between overflow-hidden border-2 border-white bg-white hover:border-pink-200 transition-all duration-300">
-      {/* Contenedor de la Imagen */}
+    <article className="card-boutique group flex flex-col justify-between overflow-hidden">
+      {/* Contenedor de Imagen con Aspect Ratio Uniforme */}
       <div
-        className="relative w-full h-56 sm:h-64 bg-pink-50 overflow-hidden cursor-pointer"
+        className="relative w-full aspect-[4/3] sm:aspect-[1/1] bg-[#fff0f4] overflow-hidden cursor-pointer"
         onClick={() => onSelect && onSelect(product)}
       >
         <Image
@@ -38,14 +38,14 @@ export function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps
           alt={`${product.title} - Regalos Personalizados en Oberá - DulzuraBox`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#900020]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#3d0c1a]/45 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
 
-        {/* Badges Superiores */}
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
+        {/* Etiquetas Superiores */}
+        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 pointer-events-none">
           {product.category?.name ? (
-            <span className="bg-white/95 backdrop-blur-md text-[#900020] text-[11px] font-black px-3 py-1 rounded-full shadow-sm border border-pink-100">
+            <span className="bg-white/95 backdrop-blur-md text-[#7A0022] text-[11px] font-bold px-3 py-1 rounded-full shadow-xs">
               {product.category.name}
             </span>
           ) : (
@@ -53,57 +53,62 @@ export function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps
           )}
 
           {product.badge && (
-            <span className="bg-gradient-to-r from-[#e01e5a] to-[#900020] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-pink-200" />
+            <span className="bg-[#7A0022] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#ff85a2]" />
               <span>{product.badge}</span>
             </span>
           )}
         </div>
 
-        {/* Botón rápido de Ver Detalle sobre imagen */}
+        {/* Botón rápido de vista previa */}
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onSelect && onSelect(product);
           }}
-          className="absolute bottom-3 left-3 bg-white/90 hover:bg-white text-[#900020] p-2 rounded-full shadow-md opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all"
-          title="Ver detalles y personalizar"
+          className="absolute bottom-3.5 left-3.5 bg-white/95 hover:bg-white text-[#7A0022] text-xs font-bold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 opacity-95 sm:opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
+          title="Ver detalles y personalizar tarjeta"
         >
-          <Eye className="w-4 h-4" />
+          <Eye className="w-3.5 h-3.5 text-[#D91B5C]" />
+          <span>Personalizar</span>
         </button>
-
-        {/* Pill de Precio destacado estilo catálogo DulzuraBox */}
-        <div className="absolute bottom-3 right-3 bg-[#fff0f3] text-[#900020] font-black text-base sm:text-lg px-3.5 py-1 rounded-2xl shadow-lg border-2 border-white flex items-center gap-1">
-          <span>{formattedPrice}</span>
-        </div>
       </div>
 
-      {/* Contenido / Textos */}
-      <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between">
+      {/* Cuerpo de la Tarjeta */}
+      <div className="p-5 flex flex-col flex-grow justify-between">
         <div>
+          <div className="flex items-baseline justify-between gap-2 mb-1.5">
+            <span className="text-lg sm:text-xl font-extrabold text-[#7A0022] tracking-tight">
+              {formattedPrice}
+            </span>
+            <span className="text-[11px] font-semibold text-[#9e586d]">
+              Tarjeta incluida
+            </span>
+          </div>
+
           <h3
-            className="font-sans text-base sm:text-lg font-black text-[#900020] leading-snug line-clamp-1 cursor-pointer hover:text-[#e01e5a] transition-colors"
+            className="font-display text-base sm:text-lg font-bold text-[#2b0711] leading-snug line-clamp-1 cursor-pointer group-hover:text-[#D91B5C] transition-colors"
             onClick={() => onSelect && onSelect(product)}
           >
             {product.title}
           </h3>
 
-          <p className="mt-1.5 text-xs sm:text-sm text-[#900020]/80 font-medium leading-relaxed line-clamp-3 min-h-[3.25rem]">
+          <p className="mt-2 text-xs sm:text-[13px] text-[#6e3043] leading-relaxed line-clamp-3 min-h-[3.25rem]">
             {product.description || "Detalle especial artesanal preparado con amor y dedicación en Oberá."}
           </p>
         </div>
 
-        {/* Acciones: Agregar al Pedido o Pedir Directo por WhatsApp */}
-        <div className="mt-4 pt-3 border-t border-pink-100 flex items-center gap-2">
+        {/* Botones de Compra: Bolsa + WhatsApp Directo */}
+        <div className="mt-5 pt-3.5 border-t border-[#7A0022]/8 flex items-center gap-2">
           {onAddToCart && (
             <button
               type="button"
               onClick={() => onAddToCart(product)}
-              className="flex items-center justify-center gap-1.5 bg-pink-100 hover:bg-[#900020] text-[#900020] hover:text-white font-extrabold py-2.5 px-3 rounded-xl transition-all duration-200 active:scale-95 shrink-0 text-xs shadow-xs"
-              title="Sumar a mi pedido para combinar varios regalos"
+              className="flex items-center justify-center gap-1 bg-[#fff0f4] hover:bg-[#ffe0e9] text-[#7A0022] border border-[#f8c6d4] font-bold py-2.5 px-3.5 rounded-xl transition-all duration-200 active:scale-95 shrink-0 text-xs cursor-pointer"
+              title="Sumar a mi bolsa para combinar varios productos"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5 text-[#D91B5C]" />
               <ShoppingBag className="w-4 h-4" />
             </button>
           )}
@@ -112,11 +117,11 @@ export function ProductCard({ product, onSelect, onAddToCart }: ProductCardProps
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1fb855] text-white font-black py-2.5 px-3 rounded-xl shadow-md transition-all duration-200 hover:shadow-lg hover:scale-[1.01] active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 bg-[#7A0022] hover:bg-[#D91B5C] text-white font-bold py-2.5 px-4 rounded-xl shadow-xs transition-all duration-200 active:scale-[0.98]"
             title={`Pedir ${product.title} por WhatsApp`}
           >
-            <MessageCircle className="w-4 h-4 fill-white stroke-none shrink-0" />
-            <span className="text-xs sm:text-sm tracking-wide">Pedir por WhatsApp</span>
+            <MessageCircle className="w-4 h-4 shrink-0" />
+            <span className="text-xs sm:text-sm">Pedir por WhatsApp</span>
           </a>
         </div>
       </div>

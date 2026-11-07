@@ -2,83 +2,80 @@
 
 @layer base {
   body {
-    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
-    background-color: #ffb6c1;
-    color: #900020;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #fff8fa;
+    color: #3d0c1a;
     overflow-x: hidden;
-  } 
+  }
 
-  h1, h2, .font-bubble {
-    font-family: 'Pacifico', cursive;
+  h1, h2, .font-display {
+    font-family: 'Fraunces', Georgia, serif;
   }
 }
 
-/* Animaciones y utilidades estéticas */
+/* Animaciones sutiles y elegantes */
 @keyframes twinkle {
   0%, 100% {
-    opacity: 0.35;
-    transform: scale(0.8) rotate(0deg);
+    opacity: 0.25;
+    transform: scale(0.85) rotate(0deg);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
+    opacity: 0.9;
+    transform: scale(1.1) rotate(90deg);
   }
 }
 
-@keyframes float {
+@keyframes float-slow {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-7px);
-  }
-}
-
-@keyframes pulse-soft {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(144, 0, 32, 0.25);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(144, 0, 32, 0);
+    transform: translateY(-6px);
   }
 }
 
 .animate-twinkle {
-  animation: twinkle 3s ease-in-out infinite;
+  animation: twinkle 4s ease-in-out infinite;
 }
 
 .animate-float {
-  animation: float 4.5s ease-in-out infinite;
+  animation: float-slow 5s ease-in-out infinite;
 }
 
-.animate-pulse-soft {
-  animation: pulse-soft 2.5s infinite;
+/* Superficie de marca (Rosa pastel oficial del catálogo con malla luminosa) */
+.hero-brand-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.85) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 182, 193, 0.7) 0%, transparent 50%),
+    linear-gradient(180deg, #ffd1dc 0%, #ffe4ec 55%, #fff8fa 100%);
 }
 
-/* Efectos visuales de tarjetas fieles al logo y catálogo */
-.card-cute {
-  background: rgba(255, 255, 255, 0.96);
+/* Tarjetas de producto estilo boutique profesional */
+.card-boutique {
+  background: #ffffff;
   border-radius: 1.5rem;
-  box-shadow: 0 12px 28px -6px rgba(144, 0, 32, 0.14), 0 6px 12px -4px rgba(144, 0, 32, 0.08);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(122, 0, 34, 0.08);
+  box-shadow:
+    0 4px 20px -2px rgba(61, 12, 26, 0.05),
+    0 2px 6px -1px rgba(61, 12, 26, 0.03);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (hover: hover) {
-  .card-cute:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 22px 35px -10px rgba(144, 0, 32, 0.22), 0 10px 18px -5px rgba(144, 0, 32, 0.12);
+  .card-boutique:hover {
+    transform: translateY(-6px);
+    border-color: rgba(217, 27, 92, 0.25);
+    box-shadow:
+      0 22px 40px -12px rgba(122, 0, 34, 0.14),
+      0 8px 16px -6px rgba(122, 0, 34, 0.06);
   }
 }
 
-/* Efecto pincelada catálogo */
-.brush-banner {
-  background: linear-gradient(135deg, #ff5c8a 0%, #e01e5a 50%, #900020 100%);
-  box-shadow: 0 10px 25px -5px rgba(144, 0, 32, 0.3);
-}
-
-/* Sombra de texto suave retro */
-.text-retro-shadow {
-  text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.85), 4px 4px 0px rgba(144, 0, 32, 0.15);
+/* Banner de destaque en color vino/frambuesa de la marca */
+.banner-royal {
+  background:
+    radial-gradient(circle at 90% 20%, rgba(255, 133, 162, 0.28) 0%, transparent 45%),
+    linear-gradient(135deg, #6b001d 0%, #8b0028 55%, #b80d48 100%);
 }
 
 /* Ocultar barra de scroll en categorías manteniendo deslizamiento fluido */

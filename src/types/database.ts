@@ -14,7 +14,16 @@ export interface Product {
   price: number;
   image_url: string;
   is_active: boolean;
+  is_featured?: boolean;
+  badge?: string;
+  price_label?: string;
   order_index: number;
   created_at?: string;
   category?: Category;
 }
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
